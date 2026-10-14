@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tochka-rosta-v6';
+const CACHE_NAME = 'tochka-rosta-v7';
 const CORE_ASSETS = [
   './',
   './index.html',
