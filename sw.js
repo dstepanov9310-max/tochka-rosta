@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tochka-rosta-v9';
+const CACHE_NAME = 'tochka-rosta-v10';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -19,7 +19,10 @@ self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
   if (event.request.mode === 'navigate' || url.pathname.endsWith('/index.html')) {
-    event.respondWith(fetch(event.request).then(response => {
+    const freshUrl = new URL(event.request.url);
+    freshUrl.searchParams.set('app-version', CACHE_NAME);
+    const freshRequest = new Request(freshUrl.toString(), event.request);
+    event.respondWith(fetch(freshRequest).then(response => {
       if (response.ok) caches.open(CACHE_NAME).then(cache => cache.put(event.request, response.clone()));
       return response;
     }).catch(() => caches.match(event.request).then(cached => cached || caches.match('./index.html'))));
